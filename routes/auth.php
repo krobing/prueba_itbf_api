@@ -24,7 +24,7 @@ Route::post('/reset-password', [NewPasswordController::class, 'store'])
     ->middleware('guest')
     ->name('password.store');
 
-/* Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)
+Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)
     ->middleware(['auth', 'signed', 'throttle:6,1'])
     ->name('verification.verify');
 
@@ -34,4 +34,4 @@ Route::post('/email/verification-notification', [EmailVerificationNotificationCo
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
-    ->name('logout'); */
+    ->name('logout');

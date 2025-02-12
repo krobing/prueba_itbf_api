@@ -3,15 +3,30 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+
+// use App\Http\Resources\HabitacionResource;
+use App\Models\Hotel;
+use App\Models\Habitacion;
 
 class HabitacionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): JsonResponse
     {
-        //
+        $hotelId = $request->query('hotel_id');
+
+        $hotel = Hotel::find($hotelId);
+        // if (!$hotel) {
+        //     throw new HotelNotFoundException('Hotel with ID ' . $hotelId . ' not found.');
+        // }
+
+        // Obtener y agrupar las habitaciones del hotel
+        $groupedRooms = $hotel->rooms->groupBy(['tipo', 'acomodacion']);
+
+        return response()->json($groupedRooms);
     }
 
     /**
@@ -19,20 +34,10 @@ class HabitacionController extends Controller
      */
     public function store(Request $request)
     {
-  /*       $validatedData = $request->validate([
-            'hotel_id' => 'required|exists:hotels,id',
-            'tipo' => 'required|in:Estándar,Junior,Suite',
-            'acomodacion' => 'required|in:Sencilla,Doble,Triple,Cuádruple',
-        ]);
-    
-        $habitacion = Habitacion::create($validatedData);
-    
-        return response()->json($habitacion, 201); */
-
-
         $hotel = Hotel::findOrFail($request->hotel_id);
-    
-        if ($hotel->capacidad_habitaciones >= 42) {
+        
+        $totalHabitaciones = $hotel->habitaciones()->count();
+        if ($totalHabitaciones >= $hotel->capacidad_habitaciones) {
             return response()->json(['error' => 'El hotel ha alcanzado su capacidad máxima de habitaciones.'], 400);
         }
 
@@ -54,8 +59,6 @@ class HabitacionController extends Controller
         }
 
         $habitacion = Habitacion::create($validatedData);
-        // $hotel->capacidad_habitaciones++;
-        // $hotel->save();
 
         return response()->json($habitacion, 201);
     }

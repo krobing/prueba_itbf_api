@@ -13,8 +13,10 @@
 				"amiralizadeh9480.laravel-extra-intellisense",
 				"laravel.vscode-laravel",
 				"ryannaddy.laravel-artisan",
-				"damms005.devdb"
-				// "onecentlin.laravel5-snippets",
+				"damms005.devdb",
+				"christian-kohler.path-intellisense",
+				"bmewburn.vscode-intelephense-client",
+				"onecentlin.laravel5-snippets"
 				// "onecentlin.laravel-blade"
 			],
 			"settings": {
@@ -24,7 +26,7 @@
 		}
 	},
 	"remoteUser": "sail",
-	"postCreateCommand": "chown -R 1000:1000 /var/www/html 2>/dev/null || true",
+	"postCreateCommand": "chown -R 1000:1000 /var/www/html 2>/dev/null || true"
 	// "forwardPorts": []
 	// "runServices": [],
 	// "shutdownAction": "none",

@@ -3,6 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Foundation\Exceptions\Renderer\Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
+use App\Http\Controllers\Controller;
+use App\Http\Resources\HotelResource;
+use App\Models\Hotel;
 
 class HotelController extends Controller
 {
@@ -11,7 +19,9 @@ class HotelController extends Controller
      */
     public function index()
     {
-        //
+        $hotels = Hotel::with('habitaciones')->get();
+        
+        return HotelResource::collection($hotels);
     }
 
     /**
@@ -19,17 +29,26 @@ class HotelController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'nombre' => 'required|unique:hotels',
-            'ciudad' => 'required',
-            'direccion' => 'required',
-            'nit' => 'required|unique:hotels',
-            'capacidad_habitaciones' => 'required|integer|max:42',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'nombre' => 'required|unique:hotels',
+                'ciudad' => 'required',
+                'direccion' => 'required',
+                'nit' => 'required|unique:hotels',
+                'capacidad_habitaciones' => 'required|integer|max:42',
+            ]);
     
-        $hotel = Hotel::create($validatedData);
-    
-        return response()->json($hotel, 201);
+            $hotel = Hotel::create($validatedData);
+        
+            return response()->json($hotel, 201);
+
+        } catch (ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Recurso no encontrado'], 404);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Error en el servidor'], 500);
+        }
     }
 
     /**
@@ -37,9 +56,9 @@ class HotelController extends Controller
      */
     public function show(string $id)
     {
-        // return response()->json($hotel->load('habitaciones'));
-        $hotel = Hotel::with('habitaciones')->findOrFail($id);
-        return response()->json($hotel);
+        $hotel = Hotel::with(['habitaciones'])->findOrFail($id);
+
+        return new HotelResource($hotel);
     }
 
     /**

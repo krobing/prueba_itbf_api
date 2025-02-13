@@ -16,26 +16,13 @@ class TipoAcomodacionSeeder extends Seeder
     public function run(): void
     {
         DB::table('tipo_acomodacions')->insert([
-            'tipo' => 'Estándar',
-            'acomodacion' => 'Sencilla'
-        ],[
-            'tipo' => 'Estándar',
-            'acomodacion' => 'Doble'
-        ],[
-            'tipo' => 'Junior',
-            'acomodacion' => 'Triple'
-        ],[
-            'tipo' => 'Junior',
-            'acomodacion' => 'Cuádruple'
-        ],[
-            'tipo' => 'Suite',
-            'acomodacion' => 'Sencilla'
-        ],[
-            'tipo' => 'Suite',
-            'acomodacion' => 'Doble'
-        ],[
-            'tipo' => 'Suite',
-            'acomodacion' => 'Triple'
+            ['tipo' => 'Estándar', 'acomodacion' => 'Sencilla'],
+            ['tipo' => 'Estándar', 'acomodacion' => 'Doble'],
+            ['tipo' => 'Junior', 'acomodacion' => 'Triple'],
+            ['tipo' => 'Junior', 'acomodacion' => 'Cuádruple'],
+            ['tipo' => 'Suite', 'acomodacion' => 'Sencilla'],
+            ['tipo' => 'Suite', 'acomodacion' => 'Doble'],
+            ['tipo' => 'Suite', 'acomodacion' => 'Triple']
         ]);
     }
 }

@@ -12,6 +12,7 @@ class Habitacion extends Model
         'hotel_id',
         'tipo',
         'acomodacion',
+        'tipo_acomodacion_id',
     ];
     
     /**
@@ -31,6 +32,6 @@ class Habitacion extends Model
      */
     public function tipoAcomodacion(): HasOne
     {
-        return $this->hasOne(TipoAcomodacion::class);
+        return $this->hasOne(TipoAcomodacion::class, 'id', 'tipo_acomodacion_id');
     }
 }

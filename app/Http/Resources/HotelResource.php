@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Str;
+// use Illuminate\Support\Str;
 
 class HotelResource extends JsonResource
 {
@@ -28,15 +28,18 @@ class HotelResource extends JsonResource
         // Agrupamos y contamos las habitaciones solo si estamos en el método `show`
         if ($request->route()->getName() === 'hoteles.show') {
             $groupedRooms = $this->habitaciones->groupBy(function ($room) {
-                return Str::lower($room->tipo . '_' . $room->acomodacion);
+                // return Str::lower($room->tipo . '_' . $room->acomodacion);
+                return $room->tipo_acomodacion_id;
             })->map(function ($rooms, $key) {
                 return [
-                    'tipo_acomodacion' => $key,
+                    'tipo_acomodacion_id' => $key,
+                    'tipo' => $rooms->first()->tipoAcomodacion->tipo,
+                    'acomodacion' => $rooms->first()->tipoAcomodacion->acomodacion,
                     'count' => $rooms->count(),
                 ];
             });
 
-            $toReturnArray["grouped_rooms"] = $groupedRooms;
+            $toReturnArray["habitaciones_tipo_acomodacion"] = $groupedRooms;
         }
         
         return $toReturnArray;

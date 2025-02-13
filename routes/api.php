@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\HabitacionController;
-// use App\Http\Controllers\TipoAcomodacionController;
+use App\Http\Controllers\TipoAcomodacionController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
@@ -13,4 +13,4 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::apiResource('hoteles', HotelController::class)->only(['index', 'store', 'show']);
 Route::apiResource('habitaciones', HabitacionController::class)->only(['index', 'store', 'show']);
-// Route::apiResource('tipo-acomodaciones', TipoAcomodacionController::class);
+Route::apiResource('tipo-acomodaciones', TipoAcomodacionController::class)->only(['index']);

@@ -19,6 +19,8 @@ class HabitacionResource extends JsonResource
             'hotel_id' => $this->hotel_id,
             'tipo' => $this->tipo,
             'acomodacion' => $this->acomodacion,
+            'tipo_acomodacion_id' => $this->tipo_acomodacion_id,
+            'hotel' => new HotelResource($this->hotel),
         ];
     }
 }

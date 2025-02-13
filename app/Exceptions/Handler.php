@@ -22,5 +22,9 @@ class Handler extends ExceptionHandler
         $this->renderable(function (Throwable $e, $request) {
             return response()->json(['error' => 'Error en el servidor'], 500);
         });
+
+        $this->renderable(function (HotelNotFoundException $e, $request) {
+            return response()->json(['error' => $e->message], 404);
+        });
     }
 }

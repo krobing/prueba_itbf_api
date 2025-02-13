@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
+// use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Exceptions\Renderer\Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+use App\Exceptions\HotelNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\HotelResource;
 use App\Models\Hotel;
@@ -40,7 +41,7 @@ class HotelController extends Controller
     
             $hotel = Hotel::create($validatedData);
         
-            return response()->json($hotel, 201);
+            return response()->json(new HotelResource($hotel), 201);
 
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
@@ -56,7 +57,11 @@ class HotelController extends Controller
      */
     public function show(string $id)
     {
-        $hotel = Hotel::with(['habitaciones'])->findOrFail($id);
+        $hotel = Hotel::with(['habitaciones'])->find($id);
+
+        if (!$hotel) {
+            throw new HotelNotFoundException('El Hotel con ID ' . $id . ' no se encuentra.');
+        }
 
         return new HotelResource($hotel);
     }

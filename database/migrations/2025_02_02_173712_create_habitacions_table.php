@@ -18,9 +18,8 @@ return new class extends Migration
             $table->string('acomodacion');
             $table->timestamps();
             
-            $table->unsignedBigInteger('tipo_acomodacion_id')->after('hotel_id');
-            // $table->foreignId('tipo_acomodacion_id')->constrained('tipo_acomodacions')->onDelete('cascade');
-            $table->foreign('tipo_acomodacion_id')->references('id')->on('tipo_acomodacions')->onDelete('cascade');
+            $table->foreignId('tipo_acomodacion_id')->constrained('tipo_acomodacions')->onDelete('cascade');
+            // $table->foreign('tipo_acomodacion_id')->references('id')->on('tipo_acomodacions')->onDelete('cascade');
         });
     }
 
